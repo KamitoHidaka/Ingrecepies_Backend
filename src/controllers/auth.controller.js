@@ -52,13 +52,12 @@ export const login = async (req, res) => {
   const { email, password } = req.body;
   try {
     const userFound = await User.findOne({ email });
-    if (!userFound) {
-      return res.status(404).json(["El usuario no existe"] );
-    }
 
-    const isPasswordValid = await bcrypt.compare(password, userFound.password);
-    if (!isPasswordValid) {
-      return res.status(400).json(["Contraseña incorrecta"]);
+    if (!userFound || !(await bcrypt.compare(password, userFound.password))) {
+      const message = !userFound
+        ? "El usuario no existe"
+        : "Contraseña incorrecta";
+      return res.status(userFound ? 400 : 404).json([message]);
     }
 
     const token = await createAccessToken({ id: userFound._id });
@@ -80,7 +79,11 @@ export const login = async (req, res) => {
 };
 
 export const logout = (req, res) => {
-  res.cookie("token", "", { expires: new Date(0) });
+  res.cookie("token", "", {
+    secure: true,
+    httpOnly: true,
+    expires: new Date(0),
+  });
   return res.sendStatus(200);
 };
 

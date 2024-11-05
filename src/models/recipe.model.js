@@ -16,26 +16,18 @@ const ingredientSchema = new mongoose.Schema({
 });
 
 const stepsSchema = new mongoose.Schema({
-  stepNumber: {
-    type: Number,
-    require: true,
-  },
   step: {
     type: String,
     require: true,
   },
 });
 
-const recepieSchema = new mongoose.Schema({
+const recipeSchema = new mongoose.Schema({
   name: {
     type: String,
     require: true,
   },
   category: {
-    type: String,
-    require: true,
-  },
-  image: {
     type: String,
     require: true,
   },
@@ -54,10 +46,13 @@ const recepieSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
     require: true
+  }, 
+  image: {
+    type: String,
+    require: true,
   },
-
 },{
   timestamps: true
 });
 
-export default mongoose.model("Recepie", recepieSchema);
+export default mongoose.model("Recipe", recipeSchema);

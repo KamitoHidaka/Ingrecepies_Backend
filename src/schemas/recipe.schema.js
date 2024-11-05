@@ -1,6 +1,6 @@
 import {z} from "zod";
 
-export const recepieSchema = z.object({
+export const recipeSchema = z.object({
     name: z
     .string({
         required_error: "El nombre de la receta es obligatorio"
@@ -23,19 +23,12 @@ export const recepieSchema = z.object({
 
     steps: z.array(
         z.object({
-            stepNumber: z
-                .number({
-                    required_error: "El paso a seguir es obligatorio",
-                })
-                .min(1, {
-                    message: "El paso debe ser mayor o igual a 1",
-                }),
             step: z
                 .string({
                     required_error: "El paso a seguir es obligatorio",
                 })
                 .min(4, {
-                    message: "El paso debe ser mayor o igual a  caracteres",
+                    message: "El paso debe tener al menos 4 caracteres",
                 }),
         })
     ),
